@@ -61,13 +61,15 @@ npx playwright install chromium
 npm test
 ```
 
-The Chromium project is configured with `headless: false`, so `npm test` runs with a visible browser. The existing headed script is:
+Locally, the Chromium project runs headed with a 500 ms slow-motion delay, so `npm test` runs with a visible browser. The existing headed script is:
 
 ```bash
 npm run test:headed
 ```
 
-There is no headless script in `package.json`. To run headless, change `headless: false` to `headless: true` in `playwright.config.ts`, then run `npm test`.
+To run headless locally, use `CI=true npm test` (in PowerShell: `$env:CI = "true"; npm test`). This does not change the default headed local configuration.
+
+GitHub Actions sets `CI=true`, which makes tests run headless with slow motion disabled without changing the local browser settings.
 
 ## HTML Report
 
@@ -76,6 +78,10 @@ The HTML reporter creates a report in `playwright-report/` after a test run. Ope
 ```bash
 npm run report
 ```
+
+## GitHub Actions
+
+The workflow runs on pushes and pull requests targeting `main`. It installs dependencies and Chromium, runs the full test suite, and uploads `playwright-report/` and `test-results/` as workflow artifacts even if tests fail. Open the workflow run in GitHub and download the artifacts to inspect the HTML report and test output.
 
 ## Future Improvements
 

@@ -17,12 +17,12 @@ projects: [
     name: "chromium",
     use: {
       ...devices["Desktop Chrome"],
-      headless: false,
+      headless: Boolean(process.env.CI),
       viewport: null,
       deviceScaleFactor: undefined,
       launchOptions: {
         args: ["--start-maximized"],
-        slowMo: 500,
+        slowMo: process.env.CI ? 0 : 500,
       },
     },
   },
